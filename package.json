@@ -1,0 +1,12 @@
+{
+  "name": "suspicious",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/HakuKoshi/suspicious.git",
+  "author": "HakuKoshi <anhnguyen.301096@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^11.3.0",
+    "fs": "^0.0.1-security"
+  }
+}
