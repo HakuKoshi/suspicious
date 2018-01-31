@@ -1,6 +1,12 @@
 const Discord = require('discord.js');
 const fs = require('fs');
+
+
 const config = JSON.parse(fs.readFileSync("./config.json"));
+const location_role = JSON.parse(fs.readFileSync("./location_role.json"));
+const exclude_role = JSON.parse(fs.readFileSync("./exclude_role.json"));
+
+
 console.log(config);
 
 const bot = new Discord.Client();
@@ -12,211 +18,28 @@ bot.on("message", message => {
         let mes = message.content.slice(config.prefix.length, message.content.length).split(" ");
         const command = mes[0];
         mes.shift();
-        const text = mes.join(" ");
+        const text = mes.join("").toLowerCase();
 
 
         switch (command) {
             case 'goto':
-                const location = text.split("-");
-                let zone = location[0];
-                let room = location[1];
-                if (zone != undefined) zone = zone.trim();
-                if (room != undefined) room = room.trim();
-                if (zone != undefined && room != undefined) {
-                    const currentRole = message.member.roles.find(x => x.name != 'Player' && x.name != '@everyone' && x.name != 'God');
-                    switch (zone) {
-                        
-                        case 'Khoang tàu':
-                            switch (room) {
-                                
+                const location = location_role[text];
+                if (!message.member.roles.exists(x => x.name == "Player"))
+                    message.channel.send("Chỉ có Players mới thực hiện được lệnh này.");
+                else {
+                    if (location) {
+                        const currentLocation = message.member.roles.find(x => Object.keys(exclude_role).includes(x.name) == false);
+                        message.member.addRole(location.roleid)
+                            .then(() => {
+                                console.log(currentLocation.name);
+                                message.channel.send(`${message.member.user} đã rời khỏi [${currentLocation.name}].`);
+                                message.member.removeRole(currentLocation);
 
-                                case 'Boong tàu':
-                                    if (message.member.roles.exists(x => x.name == `${zone} - ${room}`))
-                                        message.channel.send(`Bạn đang ở ${room} rồi. Xin hãy đến vị trí khác hoặc không dùng lệnh nếu muốn ở lại.`);
-                                    else {
-                                        message.delete();
-                                        
-                                        message.member.addRole(message.guild.roles.find(x => x.name == `${zone} - ${room}`))
-                                            .then(() => {
-                                                if (currentRole != null) {
-                                                    message.member.removeRole(currentRole);
-                                                    message.channel.send(`${message.member.user} đã rời khỏi [${currentRole.name}].`);
-
-                                                }
-                                                const toChannel = message.guild.channels.find(x => x.name == "boong-tau");
-                                                toChannel.send(`${message.member.user} đã đến ${room}.`);
-
-                                            })
-                                            .catch(err => console.log(err.message));
-
-                                    }
-
-                                    break;
-                                case 'Phòng lái':
-
-                                    if (message.member.roles.exists(x => x.name == `${zone} - ${room}`))
-                                        message.channel.send(`Bạn đang ở ${room} rồi. Xin hãy đến vị trí khác hoặc không dùng lệnh nếu muốn ở lại.`);
-                                    else {
-                                        message.delete();
-                                         
-                                         
-                                        message.member.addRole(message.guild.roles.find(x => x.name == `${zone} - ${room}`))
-                                            .then(() => {
-
-                                                if (currentRole != null) {
-                                                    message.member.removeRole(currentRole);
-                                                    message.channel.send(`${message.member.user} đã rời khỏi [${currentRole.name}].`);
-
-                                                }
-                                                const toChannel = message.guild.channels.find(x => x.name == "phong-lai");
-                                                toChannel.send(`${message.member.user} đã đến ${room}.`);
-
-                                            })
-                                            .catch(err => console.log(err.message));
-
-                                    }
-                                    break;
-
-                                case 'Hành lang':
-                                    if (message.member.roles.exists(x => x.name == `${zone} - ${room}`))
-                                        message.channel.send(`Bạn đang ở ${room} rồi. Xin hãy đến vị trí khác hoặc không dùng lệnh nếu muốn ở lại.`);
-                                    else {
-                                        message.delete();
-                                        const currentRole = message.member.roles.find(x => x.name != 'Player' && x.name != '@everyone' && x.name != "God");
-                                         
-                                        message.member.addRole(message.guild.roles.find(x => x.name == `${zone} - ${room}`))
-                                            .then(() => {
-                                                if (currentRole != null) {
-                                                    message.member.removeRole(currentRole);
-                                                    message.channel.send(`${message.member.user} đã rời khỏi [${currentRole.name}].`);
-
-                                                }
-                                                const toChannel = message.guild.channels.find(x => x.name == "hanh-lang");
-                                                toChannel.send(`${message.member.user} đã đến ${room}.`);
-
-                                            })
-                                            .catch(err => console.log(err.message));
-
-                                    }
-                                    break;
-
-                                case 'Phòng thủy thủ đoàn':
-                                    if (message.member.roles.exists(x => x.name == `${zone} - ${room}`))
-                                        message.channel.send(`Bạn đang ở ${room} rồi. Xin hãy đến vị trí khác hoặc không dùng lệnh nếu muốn ở lại.`);
-                                    else {
-                                        message.delete();
-                                        const currentRole = message.member.roles.find(x => x.name != 'Player' && x.name != '@everyone' && x.name != "God");
-                                         
-                                        message.member.addRole(message.guild.roles.find(x => x.name == `${zone} - ${room}`))
-                                            .then(() => {
-                                                if (currentRole != null) {
-                                                    message.member.removeRole(currentRole);
-                                                    message.channel.send(`${message.member.user} đã rời khỏi [${currentRole.name}].`);
-
-                                                }
-                                                const toChannel = message.guild.channels.find(x => x.name == "phong-thuy-thu-doan");
-                                                toChannel.send(`${message.member.user} đã đến ${room}.`);
-
-                                            })
-                                            .catch(err => console.log(err.message));
-
-                                    }
-                                    break;
-
-                                case 'Phòng dạ hội':
-                                    if (message.member.roles.exists(x => x.name == `${zone} - ${room}`))
-                                        message.channel.send(`Bạn đang ở ${room} rồi. Xin hãy đến vị trí khác hoặc không dùng lệnh nếu muốn ở lại.`);
-                                    else {
-                                        message.delete();
-                                        const currentRole = message.member.roles.find(x => x.name != 'Player' && x.name != '@everyone' && x.name != "God");
-                                         
-                                        message.member.addRole(message.guild.roles.find(x => x.name == `${zone} - ${room}`))
-                                            .then(() => {
-                                                if (currentRole != null) {
-                                                    message.member.removeRole(currentRole);
-                                                    message.channel.send(`${message.member.user} đã rời khỏi [${currentRole.name}].`);
-
-                                                }
-                                                const toChannel = message.guild.channels.find(x => x.name == "phong-da-hoi");
-                                                toChannel.send(`${message.member.user} đã đến ${room}.`);
-
-                                            })
-                                            .catch(err => console.log(err.message));
-
-                                    }
-                                    break;
-
-                                case 'Bếp':
-                                    if (message.member.roles.exists(x => x.name == `${zone} - ${room}`))
-                                        message.channel.send(`Bạn đang ở ${room} rồi. Xin hãy đến vị trí khác hoặc không dùng lệnh nếu muốn ở lại.`);
-                                    else {
-                                        message.delete();
-                                        const currentRole = message.member.roles.find(x => x.name != 'Player' && x.name != '@everyone' && x.name != "God");
-                                         
-                                        message.member.addRole(message.guild.roles.find(x => x.name == `${zone} - ${room}`))
-                                            .then(() => {
-                                                if (currentRole != null) {
-                                                    message.member.removeRole(currentRole);
-                                                    message.channel.send(`${message.member.user} đã rời khỏi [${currentRole.name}].`);
-
-                                                }
-                                                const toChannel = message.guild.channels.find(x => x.name == "bep");
-                                                toChannel.send(`${message.member.user} đã đến ${room}.`);
-
-                                            })
-                                            .catch(err => console.log(err.message));
-
-                                    }
-                                    break;
-
-                                case 'Hồ bơi':
-                                    if (message.member.roles.exists(x => x.name == `${zone} - ${room}`))
-                                        message.channel.send(`Bạn đang ở ${room} rồi. Xin hãy đến vị trí khác hoặc không dùng lệnh nếu muốn ở lại.`);
-                                    else {
-                                        message.delete();
-                                        const currentRole = message.member.roles.find(x => x.name != 'Player' && x.name != '@everyone' && x.name != "God");
-                                         
-                                        message.member.addRole(message.guild.roles.find(x => x.name == `${zone} - ${room}`))
-                                            .then(() => {
-                                                if (currentRole != null) {
-                                                    message.member.removeRole(currentRole);
-                                                    message.channel.send(`${message.member.user} đã rời khỏi [${currentRole.name}].`);
-
-                                                }
-                                                const toChannel = message.guild.channels.find(x => x.name == "ho-boi");
-                                                toChannel.send(`${message.member.user} đã đến ${room}.`);
-
-                                            })
-                                            .catch(err => console.log(err.message));
-
-                                    }
-                                    break;
-                                default:
-                                    message.channel.send("Xin hãy ghi đúng vị trí phòng `VD: 1-A, 2-D, Phòng dạ hội, X`");
-
-                            }
-
-                            break;
-
-                        case 'Tầng hầm':
-                            switch (room) {
-                                case 'Phòng máy':
-                                    break;
-
-
-
-                                default:
-                                    message.channel.send("Xin hãy ghi đúng vị trí phòng `VD: 1-A, 2-D, Phòng dạ hội, X`");
-
-                            }
-                            break;
-
-                        default:
-                            message.channel.send("Xin hãy ghi đúng vị trí tầng `VD: Khoang tàu, Tầng hầm`");
-
+                            });
                     }
+                    else message.channel.send("Xin hãy ghi chính xác theo cú pháp !goto  [Tên tầng] - [Tên phòng]  `VD: !goto khoang tàu - phòng lái`");
                 }
-                else message.channel.send("Xin hãy ghi đúng cú pháp `!goto [Tên tầng] - [Tên phòng]`");
+
 
                 break;
 
