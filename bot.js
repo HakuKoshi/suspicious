@@ -26,12 +26,13 @@ bot.on("message", message => {
                     switch (zone) {
                         case 'Khoang tàu':
                             switch (room) {
+
                                 case 'Boong tàu':
                                     if (message.member.roles.exists(x => x.name == `${zone} - ${room}`))
                                         message.channel.send(`Bạn đang ở ${room} rồi. Xin hãy đến vị trí khác hoặc không dùng lệnh nếu muốn ở lại.`);
                                     else {
                                         message.delete();
-                                        const currentRole = message.member.roles.find(x => x.name != 'Player' && x.name != '@everyone');
+                                        const currentRole = message.member.roles.find(x => x.name != 'Player' && x.name != '@everyone' && x.name != 'God');
                                         message.member.removeRole(currentRole);
                                         message.member.addRole(message.guild.roles.find(x => x.name == `${zone} - ${room}`))
                                             .then(() => {
@@ -55,10 +56,11 @@ bot.on("message", message => {
                                         message.channel.send(`Bạn đang ở ${room} rồi. Xin hãy đến vị trí khác hoặc không dùng lệnh nếu muốn ở lại.`);
                                     else {
                                         message.delete();
-                                        const currentRole = message.member.roles.find(x => x.name != 'Player' && x.name != '@everyone');
+                                        const currentRole = message.member.roles.find(x => x.name != 'Player' && x.name != '@everyone' && x.name != 'God');
                                         message.member.removeRole(currentRole);
                                         message.member.addRole(message.guild.roles.find(x => x.name == `${zone} - ${room}`))
                                             .then(() => {
+
                                                 if (currentRole != null) {
 
                                                     message.channel.send(`${message.member.user} đã rời khỏi [${currentRole.name}].`);
@@ -78,7 +80,7 @@ bot.on("message", message => {
                                         message.channel.send(`Bạn đang ở ${room} rồi. Xin hãy đến vị trí khác hoặc không dùng lệnh nếu muốn ở lại.`);
                                     else {
                                         message.delete();
-                                        const currentRole = message.member.roles.find(x => x.name != 'Player' && x.name != '@everyone');
+                                        const currentRole = message.member.roles.find(x => x.name != 'Player' && x.name != '@everyone' && x.name != "God");
                                         message.member.removeRole(currentRole);
                                         message.member.addRole(message.guild.roles.find(x => x.name == `${zone} - ${room}`))
                                             .then(() => {
@@ -101,7 +103,7 @@ bot.on("message", message => {
                                         message.channel.send(`Bạn đang ở ${room} rồi. Xin hãy đến vị trí khác hoặc không dùng lệnh nếu muốn ở lại.`);
                                     else {
                                         message.delete();
-                                        const currentRole = message.member.roles.find(x => x.name != 'Player' && x.name != '@everyone');
+                                        const currentRole = message.member.roles.find(x => x.name != 'Player' && x.name != '@everyone' && x.name != "God");
                                         message.member.removeRole(currentRole);
                                         message.member.addRole(message.guild.roles.find(x => x.name == `${zone} - ${room}`))
                                             .then(() => {
@@ -124,7 +126,7 @@ bot.on("message", message => {
                                         message.channel.send(`Bạn đang ở ${room} rồi. Xin hãy đến vị trí khác hoặc không dùng lệnh nếu muốn ở lại.`);
                                     else {
                                         message.delete();
-                                        const currentRole = message.member.roles.find(x => x.name != 'Player' && x.name != '@everyone');
+                                        const currentRole = message.member.roles.find(x => x.name != 'Player' && x.name != '@everyone' && x.name != "God");
                                         message.member.removeRole(currentRole);
                                         message.member.addRole(message.guild.roles.find(x => x.name == `${zone} - ${room}`))
                                             .then(() => {
@@ -147,7 +149,7 @@ bot.on("message", message => {
                                         message.channel.send(`Bạn đang ở ${room} rồi. Xin hãy đến vị trí khác hoặc không dùng lệnh nếu muốn ở lại.`);
                                     else {
                                         message.delete();
-                                        const currentRole = message.member.roles.find(x => x.name != 'Player' && x.name != '@everyone');
+                                        const currentRole = message.member.roles.find(x => x.name != 'Player' && x.name != '@everyone' && x.name != "God");
                                         message.member.removeRole(currentRole);
                                         message.member.addRole(message.guild.roles.find(x => x.name == `${zone} - ${room}`))
                                             .then(() => {
@@ -170,7 +172,7 @@ bot.on("message", message => {
                                         message.channel.send(`Bạn đang ở ${room} rồi. Xin hãy đến vị trí khác hoặc không dùng lệnh nếu muốn ở lại.`);
                                     else {
                                         message.delete();
-                                        const currentRole = message.member.roles.find(x => x.name != 'Player' && x.name != '@everyone');
+                                        const currentRole = message.member.roles.find(x => x.name != 'Player' && x.name != '@everyone' && x.name != "God");
                                         message.member.removeRole(currentRole);
                                         message.member.addRole(message.guild.roles.find(x => x.name == `${zone} - ${room}`))
                                             .then(() => {
@@ -196,8 +198,8 @@ bot.on("message", message => {
                         case 'Tầng hầm':
                             switch (room) {
                                 case 'Phòng máy':
-                                break;
-                                
+                                    break;
+
 
 
                                 default:
